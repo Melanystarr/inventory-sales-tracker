@@ -3,63 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap login form</title>
-    <link rel="stylesheet" href="styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
+    <!--
+    FIX #1: Updated page title
+    ORIGINAL: <title>Bootstrap login form</title>
+    ISSUE: Generic title doesn't reflect the actual application
+    IMPACT: Poor user experience, unprofessional in browser tabs/bookmarks
+    -->
+    <title>Inventory Sales Tracker - Login</title>
+
+    <!--
+    FIX #2: Removed non-existent CSS file reference
+    ORIGINAL: <link rel="stylesheet" href="styles.css">
+    ISSUE: File doesn't exist, causing 404 error in console
+    SOLUTION: Using internal <style> block instead
+    -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!--
+    FIX #3: Internal CSS to replace inline styles
+    BEST PRACTICE: Separation of concerns - keep styling separate from HTML structure
+    BENEFIT: Reusable classes, easier maintenance, better performance
+    -->
+    <style>
+        .login-container {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 450px;
+            margin: auto;
+            background-color: lightblue;
+        }
+        .login-form {
+            max-width: 450px;
+            margin: auto;
+        }
+        .login-btn {
+            color: lightblue;
+        }
+    </style>
 </head>
 <body>
-  <div class="text-center mt-5" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) ;max-width: 450px; margin: auto; background-color: lightblue;">
-<form style="max-width: 450px; margin: auto;">
-    <img class="mt-4 mb-3 " src="https://img.freepik.com/free-vector/3d-metal-star-isolated_1308-117760.jpg?semt=ais_hybrid&w=740&q=80" alt="" height="72">
-    <h1 class="h3 mb-3 font-weight-normal mb-4 text-light">LOGIN</h1>
-    <label for="emailAddress" class="sr-only"></label>
-    <input type="email" id="emailAddress" class="form-control" placeholder="Email Address" required autofocus>
- <label for="password" class="sr-only"></label>
- <input type="password"  id="password" placeholder="Password" class="form-control" required autofocus>
-<div class="checkbox  mt-3">
-<label>
-    <input type="checkbox" value="remember-me">Remember me
-</label>
-</div>
+  <!--
+  FIX #4: Removed inline styles from div
+  ORIGINAL: <div class="text-center mt-5" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) ;max-width: 450px; margin: auto; background-color: lightblue;">
+  ISSUE: Inline styles violate separation of concerns
+  SOLUTION: Moved to CSS class .login-container
+  -->
+  <div class="text-center mt-5 login-container">
 
-<div class="mt-3">
-     <button class="btn btn-lg btn-light btn-block mb-3 fw-bold" style="color: lightblue;">LOGIN</button>
-</div>
-</form>
+    <!--
+    FIX #5: Enhanced form tag with proper attributes
+    ORIGINAL: <form style="max-width: 450px; margin: auto;">
+    ISSUES FIXED:
+      1. Added id="loginForm" for JavaScript event handling
+      2. Added action="#" for form submission target (placeholder for backend)
+      3. Added method="POST" for secure credential transmission
+      4. Removed inline styles, using .login-form class instead
+    WHY: Forms need these attributes for proper functionality and security
+    -->
+    <form id="loginForm" class="login-form" action="#" method="POST">
+
+        <!--
+        FIX #6: Improved image accessibility
+        ORIGINAL: alt=""
+        ISSUE: Empty alt text fails accessibility standards
+        SOLUTION: Added descriptive alt text "Star logo"
+        IMPACT: Screen readers can now describe the image to visually impaired users
+        -->
+        <img class="mt-4 mb-3" src="https://img.freepik.com/free-vector/3d-metal-star-isolated_1308-117760.jpg?semt=ais_hybrid&w=740&q=80" alt="Star logo" height="72">
+
+        <h1 class="h3 mb-3 font-weight-normal mb-4 text-light">LOGIN</h1>
+
+        <!--
+        FIX #7: Email input field improvements
+        ORIGINAL ISSUES:
+          - Empty sr-only label: <label for="emailAddress" class="sr-only"></label>
+          - Missing name attribute
+          - autofocus on both email AND password (see next field)
+
+        FIXES APPLIED:
+          1. Replaced empty sr-only label with visible, styled label
+          2. Added name="email" for proper form submission
+          3. Wrapped in div.mb-3 for consistent spacing
+          4. Kept autofocus here (removed from password below)
+
+        ACCESSIBILITY: Visible labels help all users, not just screen readers
+        -->
+        <div class="mb-3">
+            <label for="emailAddress" class="form-label text-light">Email Address</label>
+            <input type="email" id="emailAddress" name="email" class="form-control" placeholder="Email Address" required autofocus>
+        </div>
+
+        <!--
+        FIX #8: Password input field improvements
+        ORIGINAL ISSUES:
+          - Empty sr-only label: <label for="password" class="sr-only"></label>
+          - Missing name attribute
+          - DUPLICATE autofocus (browser can only focus one element)
+          - Inconsistent spacing
+
+        FIXES APPLIED:
+          1. Added visible label with proper styling
+          2. Added name="password" attribute
+          3. REMOVED duplicate autofocus (email field should be focused first)
+          4. Added div.mb-3 wrapper for consistent spacing
+
+        CRITICAL: Duplicate autofocus is a common mistake - only first input should have it
+        -->
+        <div class="mb-3">
+            <label for="password" class="form-label text-light">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
+        </div>
+
+        <!--
+        FIX #9: Improved checkbox label visibility
+        ORIGINAL: Label had no color styling, hard to read on light blue background
+        ADDED: text-light class for better contrast
+        ALSO ADDED: name="remember" attribute for form submission
+        -->
+        <div class="checkbox mt-3">
+            <label class="text-light">
+                <input type="checkbox" name="remember" value="remember-me"> Remember me
+            </label>
+        </div>
+
+        <!--
+        FIX #10: Button improvements
+        ORIGINAL: <button class="btn btn-lg btn-light btn-block mb-3 fw-bold" style="color: lightblue;">LOGIN</button>
+        ISSUES FIXED:
+          1. Changed to type="submit" for proper form submission
+          2. Removed inline style, using .login-btn CSS class
+
+        WHY: type="submit" triggers form submission event, allowing JavaScript validation
+        -->
+        <div class="mt-3">
+            <button type="submit" class="btn btn-lg btn-light btn-block mb-3 fw-bold login-btn">LOGIN</button>
+        </div>
+    </form>
   </div>
 
+  <!--
+  FIX #11: Removed commented-out code
+  ORIGINAL: 28 lines of commented HTML (lines 34-61 in original)
+  ISSUE:
+    - Clutters codebase
+    - Confuses developers
+    - Malformed closing comment: / --> (should be -->)
 
+  BEST PRACTICE: Use Git for version history, not comments
+  If you need old code, use: git log and git diff
+  -->
 
-    <!-- <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="text-center">Login</h3>
-            </div>
-            <div class="card-body">
-               <form action="">
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-  / -->
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <!--
+  FIX #12: Added JavaScript functionality
+  ORIGINAL CODE HAD: No JavaScript at all
+  ISSUE: Login button did nothing, form was non-functional
 
+  WHAT THIS DOES:
+    1. Prevents default form submission (page refresh)
+    2. Captures user input (email, password, remember me)
+    3. Validates data exists
+    4. Logs to console for debugging
+    5. Shows alert to user (placeholder for real authentication)
+
+  TODO FOR PRODUCTION:
+    - Replace alert() with actual backend API call
+    - Add proper validation (email format, password strength)
+    - Implement error handling
+    - Add loading spinner during authentication
+    - Redirect to dashboard on success
+    - Store JWT token or session cookie
+
+  LEARNING: This is client-side only. Real apps need backend authentication.
+  -->
+  <script>
+    // EVENT LISTENER: Waits for form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // PREVENT DEFAULT: Stops page from refreshing (default form behavior)
+        e.preventDefault();
+
+        // CAPTURE FORM DATA: Get values from all form inputs
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const remember = document.querySelector('input[name="remember"]').checked;
+
+        // DEBUG LOGGING: Always log during development
+        console.log('Login attempt:', {
+            email: email,
+            password: '***hidden***', // Never log actual passwords
+            remember: remember
+        });
+
+        // PLACEHOLDER AUTHENTICATION
+        // TODO: Replace this with actual API call to backend
+        // Example:
+        // fetch('/api/login', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ email, password, remember })
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     if (data.success) {
+        //         localStorage.setItem('authToken', data.token);
+        //         window.location.href = '/dashboard';
+        //     } else {
+        //         alert('Invalid credentials');
+        //     }
+        // });
+
+        alert('Login form submitted!\n\nEmail: ' + email + '\n\nNote: This needs backend integration for real authentication.');
+
+        // PRODUCTION REQUIREMENTS:
+        // 1. Send credentials to backend server (Node.js, Python, PHP, etc.)
+        // 2. Backend validates against database
+        // 3. Backend returns JWT token or creates session
+        // 4. Store token in localStorage or cookie
+        // 5. Redirect to dashboard/inventory page
+        // 6. Add error handling for failed login
+    });
+  </script>
 </body>
 </html>
